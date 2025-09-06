@@ -17,7 +17,7 @@ Here’s how the automation looks in n8n:
 - Auto-generates recruiter outreach emails personalized with company & role.  
 - Tracks outreach attempts in Google Sheets.  
 - Waits for recruiter replies before sending follow-ups.  
-- Sends up to 3 follow-up emails if no reply.  
+- Sends up to 2 follow-up emails if no reply.  
 - Marks replies in the sheet automatically.  
 
 ---
@@ -52,6 +52,7 @@ docker run -it --rm \
 - Add rows in Google Sheets → workflow triggers.  
 - Emails are sent & tracked in the sheet.  
 - Replies are detected automatically.  
+
 
 
 
