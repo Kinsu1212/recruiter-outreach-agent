@@ -1,0 +1,1232 @@
+{
+  "name": "Recruiter Outreach Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID_HERE",
+          "mode": "list",
+          "cachedResultName": "Recruiter Outreach",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID_HERE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID_HERE/edit#gid=0"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -160
+      ],
+      "id": "fbda2705-3f61-4fba-be9b-9527c98dccb6",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "GT9Ot8L27Le1hqJ9",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Write only the middle body of a recruiter outreach email (no greeting, no sign-off, no resume link, no links). \nKeep it 2\u20134 short sentences, professional, under 90 words, and recruiter-friendly.\n\nContext about me to use briefly:\n- Recent Master\u2019s in Computer Science & Engineering, Santa Clara University (June 2025).\n- Built scalable real-time applications and AI tools using GPT-4, LangChain, React, AWS, Kubernetes; event-driven microservices; performance & scalability focus.\n\nPersonalize to:\n- Company: {{ $json[\"Company\"] }}\n- Role: {{ $json[\"Role\"] }}\n\nGoals:\n- Express genuine interest in the company\u2019s vision and the role (or suitable openings).\n- Highlight 1\u20132 relevant strengths tied to the role/company.\n- End with a polite sentence inviting a quick chat.\n\nReturn plain paragraphs only. No greeting, no signature, no bullets, no markdown."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        320,
+        -384
+      ],
+      "id": "164747cb-2028-4770-b7a2-9adc52316901",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "60KhGbNv2KUkxUd3",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID_HERE",
+          "mode": "list",
+          "cachedResultName": "Recruiter Outreach",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID_HERE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID_HERE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "RecruiterEmail": "={{$node[\"Google Sheets Trigger\"].json[\"RecruiterEmail\"]}}",
+            "1st Outreach Date": "={{$now}}"
+          },
+          "matchingColumns": [
+            "RecruiterEmail"
+          ],
+          "schema": [
+            {
+              "id": "FirstName",
+              "displayName": "FirstName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RecruiterEmail",
+              "displayName": "RecruiterEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Role",
+              "displayName": "Role",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Resume Link (Google Drive share link)",
+              "displayName": "Resume Link (Google Drive share link)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "1st Outreach Date",
+              "displayName": "1st Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "2nd Outreach Date",
+              "displayName": "2nd Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "3rd Outreach Date",
+              "displayName": "3rd Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reply Received (Y/N)",
+              "displayName": "Reply Received (Y/N)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        -144
+      ],
+      "id": "db5aa0de-d4e0-4a8a-9e74-c5b298a006db",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bI4GxuofGEKkeirK",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "days"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        624,
+        -144
+      ],
+      "id": "3d4163ca-446d-4f46-9e30-50df42cb2688",
+      "name": "Wait",
+      "webhookId": "17e6f94c-79d5-4c80-94bb-753cdf810bc8"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {
+          "q": "=from:{{ $node[\"Google Sheets Trigger\"].json[\"RecruiterEmail\"] }}\n\n",
+          "receivedAfter": "={{$node[\"Update row in sheet\"].json[\"1st Outreach Date\"]}}\n"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        768,
+        16
+      ],
+      "id": "9fc9d558-8aa9-4b67-9adb-6f4ec5a98ff2",
+      "name": "Get many messages",
+      "webhookId": "8929593a-4a2c-4094-aa9c-712eeec019d2",
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "SE5LuHi9Osv1tgur",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cbc2d162-64f3-4468-b9fd-418625586337",
+              "leftValue": "={{ Object.keys($json).length }}\n\n\n\n\n\n\n\n\n\n\n",
+              "rightValue": "=0\n",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        -176
+      ],
+      "id": "c499823f-5db8-412b-ba89-4e81ad7c8b6f",
+      "name": "If",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID_HERE",
+          "mode": "list",
+          "cachedResultName": "Recruiter Outreach",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID_HERE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID_HERE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "RecruiterEmail": "={{$node[\"Google Sheets Trigger\"].json[\"RecruiterEmail\"]}}",
+            "Reply Received (Y/N)": "Y"
+          },
+          "matchingColumns": [
+            "RecruiterEmail"
+          ],
+          "schema": [
+            {
+              "id": "FirstName",
+              "displayName": "FirstName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RecruiterEmail",
+              "displayName": "RecruiterEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Role",
+              "displayName": "Role",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Resume Link (Google Drive share link)",
+              "displayName": "Resume Link (Google Drive share link)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "1st Outreach Date",
+              "displayName": "1st Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "2nd Outreach Date",
+              "displayName": "2nd Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "3rd Outreach Date",
+              "displayName": "3rd Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reply Received (Y/N)",
+              "displayName": "Reply Received (Y/N)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1008,
+        -320
+      ],
+      "id": "11ae4b24-544b-4cc0-9d1e-5bfe0678bf0c",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bI4GxuofGEKkeirK",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "your-email@example.com",
+        "toEmail": "={{$node[\"Google Sheets Trigger\"].json[\"RecruiterEmail\"]}}\n",
+        "subject": "=Application for {{ $node[\"Google Sheets Trigger\"].json[\"Role\"] }} at {{ $node[\"Google Sheets Trigger\"].json[\"Company\"] }}",
+        "html": "=Hi {{$node[\"Google Sheets Trigger\"].json[\"FirstName\"]}},\n\nI just wanted to follow up on my earlier email regarding the {{$node[\"Google Sheets Trigger\"].json[\"Role\"]}} role at {{$node[\"Google Sheets Trigger\"].json[\"Company\"]}}. \nPlease let me know if there\u2019s a convenient time to connect. I\u2019d be happy to provide any additional details.<br>\n\nBest regards,<br>\nYour Name.\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1072,
+        -144
+      ],
+      "id": "8ad24052-41ad-488a-948f-4f1e4d58699c",
+      "name": "Second Outreach Email",
+      "webhookId": "25787153-9e08-4f09-bf1d-ca5271ed01b3",
+      "credentials": {
+        "smtp": {
+          "id": "MqvGL8RkN6nIftBb",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "your-email@example.com",
+        "toEmail": "={{$node[\"Google Sheets Trigger\"].json[\"RecruiterEmail\"]}}\n",
+        "subject": "=Application for {{ $node[\"Google Sheets Trigger\"].json[\"Role\"] }} at {{ $node[\"Google Sheets Trigger\"].json[\"Company\"] }}",
+        "html": "=Hi {{ $node[\"Google Sheets Trigger\"].json[\"FirstName\"] }},\n\n{{ $json[\"message\"][\"content\"] }}\n\n<p>You can view my resume here: \n<a href=\"YOUR_RESUME_LINK_HERE\">Resume</a>.</p>\n\n<p>Best regards,<br>\nYour Name<br>\n<a href=\"YOUR_LINKEDIN_LINK_HERE\">LinkedIn</a> | \n<a href=\"YOUR_GITHUB_LINK_HERE\">GitHub</a> | \n<a href=\"mailto:your-email@example.com\">your-email@example.com</a> | \nYpur_phone_number\n</p>\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        288,
+        -144
+      ],
+      "id": "654ceaf6-72af-43c0-b642-a2fa70aacb1e",
+      "name": "First Outreach Email",
+      "webhookId": "25787153-9e08-4f09-bf1d-ca5271ed01b3",
+      "credentials": {
+        "smtp": {
+          "id": "MqvGL8RkN6nIftBb",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID_HERE",
+          "mode": "list",
+          "cachedResultName": "Recruiter Outreach",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID_HERE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID_HERE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "RecruiterEmail": "={{$node[\"Google Sheets Trigger\"].json[\"RecruiterEmail\"]}}",
+            "1st Outreach Date": "=",
+            "2nd Outreach Date": "={{$now}}"
+          },
+          "matchingColumns": [
+            "RecruiterEmail"
+          ],
+          "schema": [
+            {
+              "id": "FirstName",
+              "displayName": "FirstName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RecruiterEmail",
+              "displayName": "RecruiterEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Role",
+              "displayName": "Role",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Resume Link (Google Drive share link)",
+              "displayName": "Resume Link (Google Drive share link)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "1st Outreach Date",
+              "displayName": "1st Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "2nd Outreach Date",
+              "displayName": "2nd Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "3rd Outreach Date",
+              "displayName": "3rd Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reply Received (Y/N)",
+              "displayName": "Reply Received (Y/N)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1216,
+        -144
+      ],
+      "id": "1a58b913-fc7f-412f-8898-056045e510aa",
+      "name": "Update row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bI4GxuofGEKkeirK",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "days"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1376,
+        -144
+      ],
+      "id": "d252aee4-010b-42af-8e2e-b7cdbcae6245",
+      "name": "Wait1",
+      "webhookId": "17e6f94c-79d5-4c80-94bb-753cdf810bc8"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {
+          "q": "=from:{{ $node[\"Google Sheets Trigger\"].json[\"RecruiterEmail\"] }}",
+          "receivedAfter": "={{$node[\"Update row in sheet2\"].json[\"2nd Outreach Date\"]}}  \n\n"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1488,
+        16
+      ],
+      "id": "9f29f28a-0c23-4f7e-9352-5a0eedae654e",
+      "name": "Get many messages1",
+      "webhookId": "8929593a-4a2c-4094-aa9c-712eeec019d2",
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "SE5LuHi9Osv1tgur",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "be779a3b-7e9a-4001-b369-11a4a6c37618",
+              "leftValue": "={{ Object.keys($json).length }}\n\n",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1632,
+        -160
+      ],
+      "id": "66595c0b-e809-4497-99cb-710d55ea9a9e",
+      "name": "If1",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID_HERE",
+          "mode": "list",
+          "cachedResultName": "Recruiter Outreach",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID_HERE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID_HERE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "RecruiterEmail": "={{$node[\"Google Sheets Trigger\"].json[\"RecruiterEmail\"]}}",
+            "Reply Received (Y/N)": "Y"
+          },
+          "matchingColumns": [
+            "RecruiterEmail"
+          ],
+          "schema": [
+            {
+              "id": "FirstName",
+              "displayName": "FirstName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RecruiterEmail",
+              "displayName": "RecruiterEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Role",
+              "displayName": "Role",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Resume Link (Google Drive share link)",
+              "displayName": "Resume Link (Google Drive share link)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "1st Outreach Date",
+              "displayName": "1st Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "2nd Outreach Date",
+              "displayName": "2nd Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "3rd Outreach Date",
+              "displayName": "3rd Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reply Received (Y/N)",
+              "displayName": "Reply Received (Y/N)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1744,
+        -320
+      ],
+      "id": "6774b042-c4ac-4823-9d3c-67cac3d68b1a",
+      "name": "Update row in sheet3",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bI4GxuofGEKkeirK",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "your-email@example.com",
+        "toEmail": "={{$node[\"Google Sheets Trigger\"].json[\"RecruiterEmail\"]}}\n",
+        "subject": "=Application for {{ $node[\"Google Sheets Trigger\"].json[\"Role\"] }} at {{ $node[\"Google Sheets Trigger\"].json[\"Company\"] }}",
+        "html": "=Hi {{$node[\"Google Sheets Trigger\"].json[\"FirstName\"]}},\n\nI just wanted to follow up on my earlier email regarding the {{$node[\"Google Sheets Trigger\"].json[\"Role\"]}} role at {{$node[\"Google Sheets Trigger\"].json[\"Company\"]}}. \nPlease let me know if there\u2019s a convenient time to connect. I\u2019d be happy to provide any additional details.<br>\n\nBest regards,<br>\nYour Name.\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1808,
+        -128
+      ],
+      "id": "29c5d551-b527-4559-b8d3-5badc42ff954",
+      "name": "Final Outreach Email",
+      "webhookId": "25787153-9e08-4f09-bf1d-ca5271ed01b3",
+      "credentials": {
+        "smtp": {
+          "id": "MqvGL8RkN6nIftBb",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID_HERE",
+          "mode": "list",
+          "cachedResultName": "Recruiter Outreach",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID_HERE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID_HERE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "RecruiterEmail": "={{$node[\"Google Sheets Trigger\"].json[\"RecruiterEmail\"]}}",
+            "1st Outreach Date": "=",
+            "3rd Outreach Date": "={{$now}}"
+          },
+          "matchingColumns": [
+            "RecruiterEmail"
+          ],
+          "schema": [
+            {
+              "id": "FirstName",
+              "displayName": "FirstName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RecruiterEmail",
+              "displayName": "RecruiterEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Role",
+              "displayName": "Role",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Resume Link (Google Drive share link)",
+              "displayName": "Resume Link (Google Drive share link)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "1st Outreach Date",
+              "displayName": "1st Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "2nd Outreach Date",
+              "displayName": "2nd Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "3rd Outreach Date",
+              "displayName": "3rd Outreach Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reply Received (Y/N)",
+              "displayName": "Reply Received (Y/N)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1968,
+        -128
+      ],
+      "id": "26485d8f-033c-41ac-a6ee-9a062ce22b99",
+      "name": "Update row in sheet4",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bI4GxuofGEKkeirK",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "723af4fb-580b-49be-a097-95ba9ef8ad3c",
+              "leftValue": "={{$json[\"READY\"]}}",
+              "rightValue": "Y",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        -288
+      ],
+      "id": "3d4120d3-489c-4207-b552-7184a732759c",
+      "name": "If2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "First Outreach Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Second Outreach Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Second Outreach Email": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "First Outreach Email": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet2": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Get many messages1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Final Outreach Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Outreach Email": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "21d04851-a888-45b0-a36b-4032f49e3780",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5f734e567b81b7e3fd091da6af7e73785b345a0401b1d6d57677f0890a933c02"
+  },
+  "id": "cnPQdHe3mDf4nrpf",
+  "tags": []
+}
