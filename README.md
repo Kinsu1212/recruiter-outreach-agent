@@ -28,7 +28,6 @@ Here’s how the automation looks in n8n:
 1. Open n8n locally  
 - Start with Docker: 
 
-```bash
 docker run -it --rm \
   --name n8n \
   -p 5678:5678 \
@@ -52,6 +51,7 @@ docker run -it --rm \
 - Add rows in Google Sheets → workflow triggers.  
 - Emails are sent & tracked in the sheet.  
 - Replies are detected automatically.  
+
 
 
 
